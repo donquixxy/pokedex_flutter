@@ -9,6 +9,13 @@ class EvolutionWidget extends StatelessWidget {
     var controller = Get.find<HomeController>();
     var detailController = Get.find<DetailsController>();
     var detailInformation = controller.listData[detailController.receivedIndex];
+    var helper = controller.listData.where((p0) {
+      for (var data in detailInformation.nextEvolution) {
+        return data.num == p0.num;
+      }
+      return false;
+    }).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -17,39 +24,33 @@ class EvolutionWidget extends StatelessWidget {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Expanded(
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: detailInformation.nextEvolution.length,
-              itemBuilder: (context, index) {
-                var helper = controller.listData
-                    .where((models) =>
-                        models.num ==
-                        detailInformation.nextEvolution[index].num)
-                    .toList();
-                return GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisExtent: 250,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 5),
-                    itemCount: helper.length,
-                    itemBuilder: (context, indexOfImage) {
-                      return Card(
-                        child: Column(
-                          children: [
-                            Image.network(
-                              helper[indexOfImage].imageUrl,
-                              fit: BoxFit.fill,
-                            ),
-                            Text(helper[indexOfImage].name)
-                          ],
-                        ),
-                      );
-                    });
-              }),
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 2,
+                mainAxisSpacing: 2,
+                mainAxisExtent: 150),
+            shrinkWrap: true,
+            itemCount: helper.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: Column(
+                  children: [
+                    Image.network(
+                      helper[index].imageUrl,
+                      fit: BoxFit.fitWidth,
+                      height: 100,
+                    ),
+                    Text(
+                      helper[index].name,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
         )
       ],
     );
