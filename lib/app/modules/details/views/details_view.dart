@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:pokedex/app/modules/details/widgets/detail_widgets.dart';
+import 'package:pokedex/app/modules/details/widgets/evolution_widgets.dart';
 import 'package:pokedex/app/modules/home/controllers/home_controller.dart';
 
 import '../controllers/details_controller.dart';
@@ -146,16 +147,16 @@ class DetailsView extends GetView<DetailsController> {
                           }).toList(),
                         ),
                         Expanded(
-                          child: TabBarView(
-                            controller: controller.tabController,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 18),
-                                child: DetailWidget(),
-                              ),
-                              const Text('data2'),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 18),
+                            child: TabBarView(
+                              controller: controller.tabController,
+                              children: [
+                                DetailWidget(),
+                                EvolutionWidget(),
+                              ],
+                            ),
                           ),
                         )
                       ],

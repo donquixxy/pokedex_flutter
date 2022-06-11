@@ -25,7 +25,7 @@ class DetailWidget extends StatelessWidget {
                   return weakNess;
                 })
                 .toList()
-                .toString())
+                .toString()),
       ],
     );
   }
