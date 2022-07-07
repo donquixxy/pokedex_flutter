@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -19,8 +20,7 @@ class DetailsView extends GetView<DetailsController> {
       // ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          String colorType =
-              homeController.listData[controller.receivedIndex].type[0];
+          String colorType = controller.pokeArguments.type[0];
           return Stack(
             children: [
               Container(
@@ -49,8 +49,7 @@ class DetailsView extends GetView<DetailsController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          homeController
-                              .listData[controller.receivedIndex].name,
+                          controller.pokeArguments.name,
                           style: const TextStyle(
                               fontSize: 24,
                               color: Colors.white,
@@ -61,8 +60,7 @@ class DetailsView extends GetView<DetailsController> {
                             scrollDirection: Axis.horizontal,
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: homeController
-                                .listData[controller.receivedIndex].type.length,
+                            itemCount: controller.pokeArguments.type.length,
                             itemBuilder: (context, dataIndex) {
                               return Chip(
                                   backgroundColor: colorType == 'Fire'
@@ -83,9 +81,7 @@ class DetailsView extends GetView<DetailsController> {
                                                           : Colors.blueGrey
                                                               .shade100,
                                   label: Text(
-                                    homeController
-                                        .listData[controller.receivedIndex]
-                                        .type[dataIndex],
+                                    controller.pokeArguments.type[dataIndex],
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -151,6 +147,7 @@ class DetailsView extends GetView<DetailsController> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 18),
                             child: TabBarView(
+                              physics: BouncingScrollPhysics(),
                               controller: controller.tabController,
                               children: [
                                 DetailWidget(),
@@ -173,8 +170,8 @@ class DetailsView extends GetView<DetailsController> {
               Positioned(
                 left: constraints.maxWidth * 0.26,
                 top: constraints.maxHeight * 0.13,
-                child: Image.network(
-                  homeController.listData[controller.receivedIndex].imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: controller.pokeArguments.imageUrl,
                   width: 200,
                   height: 200,
                   fit: BoxFit.cover,

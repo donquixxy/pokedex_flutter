@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pokedex/app/modules/details/controllers/details_controller.dart';
@@ -8,7 +9,7 @@ class EvolutionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<HomeController>();
     var detailController = Get.find<DetailsController>();
-    var detailInformation = controller.listData[detailController.receivedIndex];
+    var detailInformation = detailController.pokeArguments;
     var helper = controller.listData.where((p0) {
       for (var data in detailInformation.nextEvolution) {
         return data.num == p0.num;
@@ -36,15 +37,15 @@ class EvolutionWidget extends StatelessWidget {
               return Card(
                 child: Column(
                   children: [
-                    Image.network(
-                      helper[index].imageUrl,
+                    CachedNetworkImage(
+                      imageUrl: helper[index].imageUrl,
                       fit: BoxFit.fitWidth,
                       height: 100,
                     ),
                     Text(
                       helper[index].name,
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),

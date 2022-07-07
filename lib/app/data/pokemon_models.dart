@@ -62,35 +62,6 @@ class PokemonModels {
   }
 }
 
-class Type {
-  final String pokemonType;
-
-  Type({required this.pokemonType});
-
-  factory Type.fromJson(Map<String, dynamic> fromJson) {
-    return Type(pokemonType: fromJson['type']);
-  }
-}
-
-class Multipliers {
-  final double multipliers;
-
-  Multipliers({required this.multipliers});
-
-  factory Multipliers.fromJson(Map<String, dynamic> fromJson) {
-    return Multipliers(multipliers: fromJson['multipliers']);
-  }
-}
-
-class Weakness {
-  final String weakness;
-
-  Weakness({required this.weakness});
-  factory Weakness.fromJson(Map<String, dynamic> fromJson) {
-    return Weakness(weakness: fromJson['weaknesses']);
-  }
-}
-
 class NextEvolution {
   final String num;
   final String name;

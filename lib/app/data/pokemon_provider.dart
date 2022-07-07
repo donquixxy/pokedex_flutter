@@ -5,33 +5,32 @@ import 'package:pokedex/app/static/static.dart';
 import 'pokemon_models.dart';
 
 class PokemonProvider extends GetConnect {
-  Future<Response?> getPokemon(List<PokemonModels> data, {counter = 0}) async {
+  Future<List<PokemonModels>?> fetchPokemonData() async {
     try {
       final responseData = await get(apiUrl);
-      // List<PokemonModels> listOfData = [];
-      var resultData = jsonDecode(responseData.body);
+      List<PokemonModels> listPokemon = [];
 
       if (responseData.statusCode == 200) {
-        print(resultData['pokemon']);
+        var data = jsonDecode(responseData.body);
 
-        for (Map<String, dynamic> pokemonData in resultData['pokemon']) {
-          PokemonModels pokeData = PokemonModels.fromJson(pokemonData);
+        for (Map<String, dynamic> pokeData in data['pokemon']) {
+          PokemonModels pokemonModels = PokemonModels.fromJson(pokeData);
 
-          data.add(pokeData);
+          listPokemon.add(pokemonModels);
         }
-      } else {
-        throw Exception('Failed to fetch data . . ');
-      }
 
-      return responseData;
-    } on Exception catch (e) {
-      if (counter < 3) {
-        counter = counter + 1;
-        print(e);
-        return getPokemon(data, counter: counter);
+        return listPokemon;
+      } else if (responseData.statusCode != 200) {
+        return [];
       }
-    } finally {
-      print("succed");
+    } on Exception catch (_) {
+      Get.defaultDialog(
+        middleText: 'Failed To Fetch Data',
+        textConfirm: 'Ok',
+        onConfirm: () {
+          Get.back();
+        },
+      );
     }
     return null;
   }

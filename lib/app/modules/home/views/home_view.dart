@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pokedex/app/modules/home/views/search_delegate.dart';
 import 'package:pokedex/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -10,12 +12,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search')
-        ],
-      ),
+      resizeToAvoidBottomInset: false,
       // appBar: AppBar(
       //   title: const Text('HomeView'),
       //   centerTitle: true,
@@ -49,11 +46,23 @@ class HomeView extends GetView<HomeController> {
                                 fontSize: 28, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
-                            height: 30,
+                            height: 15,
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                hintText: 'Search Pokemon'),
+                            onTap: () => showSearch(
+                                context: context, delegate: PokemonSearch()),
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                           GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -68,7 +77,7 @@ class HomeView extends GetView<HomeController> {
                               return InkWell(
                                 onTap: () {
                                   Get.toNamed(Routes.DETAILS,
-                                      arguments: [index]);
+                                      arguments: [controller.listData[index]]);
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(25),
@@ -105,33 +114,13 @@ class HomeView extends GetView<HomeController> {
                                           bottom: 0,
                                           right: -30,
                                           width: 130,
-                                          child: Image.network(
-                                            controller.listData[index].imageUrl,
-                                            // errorBuilder:
-                                            //     (context, error, stackTrace) =>
-                                            //         Icon(Icons.error),
-                                            loadingBuilder: (context, child,
-                                                loadingProgress) {
-                                              if (loadingProgress == null) {
-                                                return child;
-                                              }
-
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  value: loadingProgress
-                                                              .expectedTotalBytes !=
-                                                          null
-                                                      ? loadingProgress
-                                                              .cumulativeBytesLoaded /
-                                                          loadingProgress
-                                                              .expectedTotalBytes!
-                                                      : null,
-                                                ),
-                                              );
-                                            },
+                                          child: CachedNetworkImage(
+                                            imageUrl: controller
+                                                .listData[index].imageUrl,
                                             width: 130,
                                             fit: BoxFit.cover,
+                                            errorWidget: (context, url, _) =>
+                                                Icon(Icons.error),
                                           ),
                                         ),
                                         Positioned(

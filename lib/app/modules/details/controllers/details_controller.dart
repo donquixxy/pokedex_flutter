@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pokedex/app/data/pokemon_models.dart';
 
 class DetailsController extends GetxController
     with GetSingleTickerProviderStateMixin {
-  int receivedIndex = Get.arguments[0];
+  PokemonModels pokeArguments = Get.arguments[0];
   var currentIndex = 0.obs;
 
   final List<Tab> listTab = <Tab>[
